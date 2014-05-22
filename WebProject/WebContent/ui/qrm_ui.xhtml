@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../templates/ui.xhtml">
+
+	<ui:define name="content">
+	<br/><br/><br/>
+		<h1 class="title ui-widget-header ui-corner-all">test </h1>
+		<div class="entry">
+		
+			<h:form id="form">
+
+				<p:commandButton id="refreshBtn" update="panelTable"
+					actionListener="#{broadCastPoolBean.updateBroadCast}" value="Refresh"
+					process="@parent"  />
+
+				<p:dialog header="Pool Details" widgetVar="carDialog1" resizable="false" modal="true" 
+			              width="400" showEffect="explode" hideEffect="explode">  
+
+			        <h:panelGrid id="display" columns="2" cellpadding="4">  
+			            <h:outputText value="DhanapalPerumal:" />  
+			        </h:panelGrid>  
+			    </p:dialog>
+			     
+<p:panel id="panelTable">
+                <p:dataTable id="dataTable" var="pool" value="#{broadCastPoolBean.masterPoolDataList}"
+					rowKey="#{pool.pool_id}"
+                    selectionMode="single" selection="#{broadCastPoolBean.selectedPool}" 
+                    filteredValue="#{broadCastPoolBean.filteredCars2}"
+                    paginator="true" rows="10"
+                    paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                    rowsPerPageTemplate="5,10,15" >
+					 
+					<p:ajax event="rowSelect" process="@this" listener="#{broadCastPoolBean.onRowSelect}" 
+							update=":form:display" oncomplete="carDialog1.show()" />
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:panelGrid columns="4">
+								<p:selectCheckboxMenu value="#{broadCastPoolBean.selectedPools}"
+									label="Columns" filter="true" filterText="Filter"
+									filterMatchMode="startsWith" panelStyle="width:220px">
+									<f:selectItems value="#{broadCastPoolBean.poolsData}" />
+								</p:selectCheckboxMenu>
+								<p:commandButton id="btn" update="poolColumn"
+									actionListener="#{broadCastPoolBean.updateColumns}" value="Update"
+									process="@parent" onclick="carsTable.clearFilters()" />
+	
+								<h:outputText value="Search all fields:" />
+								<p:inputText id="globalFilter" onkeyup="carsTable.filter()"
+									style="width:150px" />
+							</h:panelGrid>
+						</p:outputPanel>
+					</f:facet>
+					
+					<p:columns id="poolColumn" value="#{broadCastPoolBean.columns}" var="column" columnIndexVar="colIndex" 
+                                sortBy="#{pool[column.property]}" filterBy="#{pool[column.property]}">
+                        <f:facet name="header">
+                            #{column.header}
+                        </f:facet>
+                        #{pool[column.property]}
+                    </p:columns>
+                    
+                </p:dataTable>
+</p:panel>
+                <h:panelGrid columns="5">
+                    <p:commandButton update="@(form)" value="Submit" />
+                </h:panelGrid>
+			
+			</h:form>
+			
+		</div>
+	</ui:define>
+</ui:composition>

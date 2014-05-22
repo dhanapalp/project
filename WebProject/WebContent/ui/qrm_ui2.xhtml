@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../templates/ui.xhtml">
+
+	<ui:define name="content">
+	<br/><br/><br/>
+		<h1 class="title ui-widget-header ui-corner-all">Freddie Mac </h1>
+		<div class="entry">
+			<h:form id="form">
+
+                <p:dataTable id="dataTable" var="pool" value="#{broadCastPoolBean.masterPoolDataList}"
+					widgetVar="carsTable" 
+					emptyMessage="No pool(s) found with given criteria"
+					filteredValue="#{broadCastPoolBean.filteredCars}" 
+					paginator="true" rows="10"
+                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    rowsPerPageTemplate="5,10,15"
+                    selectionMode="single" selection="#{broadCastPoolBean.selectedCar}" >
+
+					<p:ajax event="rowSelect" update=":form:display" oncomplete="poolDialog.show()" /> 
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Search all fields:" />
+							<p:inputText id="globalFilter" onkeyup="carsTable.filter()"
+								style="width:150px" />
+						</p:outputPanel>
+					</f:facet>
+					
+                    <p:column headerText="Pool Number" sortBy="#{pool.pool_number}" 
+                    		filterBy="#{pool.pool_number}" filterMatchMode="contains" >
+                        <h:outputText value="#{pool.pool_number}" />
+                    </p:column>
+
+                    <p:column headerText="Coupon" sortBy="#{pool.coupon}" filterBy="#{pool.coupon}" filterMatchMode="contains" >
+                        <h:outputText value="#{pool.coupon}" />
+                    </p:column>
+
+                    <p:column headerText="Initial Public Disclosure Date" sortBy="#{pool.initial_disclosure_datee}" 
+                    		filterBy="#{pool.initial_disclosure_date}" filterMatchMode="contains" >
+                        <h:outputText value="#{pool.initial_disclosure_date}" />
+                    </p:column>
+
+                    <p:column headerText="Final Public Disclosure Date" sortBy="#{pool.final_disclosure_date}" 
+                    		filterBy="#{pool.final_disclosure_date}" filterMatchMode="contains" >
+                        <h:outputText value="#{pool.final_disclosure_date}" />
+                    </p:column>
+
+                    <p:column headerText="Planned Settlement Date" sortBy="#{pool.planned_settlement}" 
+                    		filterBy="#{pool.planned_settlement}" filterMatchMode="contains" >
+                        <h:outputText value="#{pool.planned_settlement}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:dialog header="pool Detail" widgetVar="poolDialog" resizable="false"
+                          showEffect="explode" hideEffect="explode">
+
+                    <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                        <h:outputText value="Pool Number:" />
+                        <h:outputText value="#{broadCastPoolBean.masterPoolData.pool_number}" style="font-weight:bold"/>
+
+                        <h:outputText value="Coupon:" />
+                        <h:outputText value="#{broadCastPoolBean.masterPoolData.coupon}" style="font-weight:bold"/>
+
+                        <h:outputText value="Initial Datecturer:" />
+                        <h:outputText value="#{broadCastPoolBean.masterPoolData.initial_disclosure_date}" style="font-weight:bold"/>
+
+                        <h:outputText value="Final Date:" />
+                        <h:outputText value="#{broadCastPoolBean.masterPoolData.final_disclosure_date}" style="font-weight:bold"/>
+                    </h:panelGrid>
+                </p:dialog>
+
+                <h:panelGrid columns="5">
+                    <p:commandButton update="@(form)" value="Submit" />
+                </h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

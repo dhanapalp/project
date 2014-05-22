@@ -1,0 +1,28 @@
+#wrapper {
+	z-index: 1;
+	width: 97%;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: left;
+}
+
+#topPresentation {
+	width: 100%;
+	background-image: #E6E6E6 url(backgroundnew.jpg) repeat-x center top;
+}
+
+#logo {
+	z-index: 2;
+	width: 10%;
+	float: left;
+}
+
+#primaryLink {
+	z-index: 2;
+	width: 25%;
+	float: right;
+	line-height: 100%;
+	font-size: 110%;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+
